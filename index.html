@@ -665,6 +665,7 @@ body{
 table.est{border-collapse:collapse;width:100%;font-size:12px;font-family:var(--font-body)}
 table.est th,table.est td{padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:right}
 table.est td:first-child,table.est th:first-child,table.est td:nth-child(2),table.est td:nth-child(3),table.est td:nth-child(4){text-align:left}
+    table.est.prod td:nth-child(2),table.est.prod td:nth-child(3),table.est.prod td:nth-child(4){text-align:right}
 table.est thead th{position:sticky;top:0;background:var(--panel-2);color:var(--lime);font-weight:700;z-index:2;border-bottom:2px solid var(--lime)}
 table.est tr:hover td{background:rgba(187,219,51,.05)}
 table.est td.sec{font-weight:800;color:var(--lime);background:var(--ink-2)}
@@ -1137,7 +1138,7 @@ function renderProdutividade(key){
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:legendBottom(),tooltip:{callbacks:{label:x=>x.dataset.label+': '+fInt(x.parsed.y)}}},
       scales:{x:{...gridOpt,stacked:true},y:{...gridOpt,stacked:true,ticks:{callback:v=>fInt(v)}}}}});
-  let h='<table class="est"><thead><tr><th>Usuário</th>'+UIND.map(i=>`<th>${ULBL[i]}</th>`).join('')+'<th>Total</th></tr></thead><tbody>';
+  let h='<table class="est prod"><thead><tr><th>Usuário</th>'+UIND.map(i=>`<th>${ULBL[i]}</th>`).join('')+'<th>Total</th></tr></thead><tbody>';
   list.forEach((r,idx)=>{
     h+=`<tr><td class="${idx===0?'sec':''}">${idx===0?'🏆 ':''}${r.u}</td>`+
       UIND.map(i=>`<td class="num">${fInt(r.vals[i]||0)}</td>`).join('')+
