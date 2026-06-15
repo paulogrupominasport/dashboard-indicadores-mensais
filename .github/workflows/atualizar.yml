@@ -2,7 +2,7 @@ name: Atualizar dados do dashboard
 
 on:
   schedule:
-    - cron: '*/30 * * * *'      # a cada 30 min (o GitHub pode atrasar alguns minutos)
+    - cron: '*/2 * * * *'      # a cada 30 min (o GitHub pode atrasar alguns minutos)
   workflow_dispatch:            # permite rodar manualmente no botão "Run workflow"
   push:
     paths:
