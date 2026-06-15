@@ -27,23 +27,38 @@ def tit(s):
     return ' '.join(w.capitalize() if not w.isupper() or len(w)>3 else w.capitalize() for w in s.split())
 
 # ---------- USER NORMALIZATION ----------
-UTAB={'rafael':'Rafael','henrique':'Henrique','henriquesilva':'Henrique','henriquerodriguessilva':'Henrique',
- 'isabela':'Isabela','isabelastefaniedeoliveiram.silva':'Isabela','isabela stefanie':'Isabela',
- 'hugo':'Hugo','hugopaula':'Hugo','hugopaulasilva':'Hugo',
- 'anapaula':'Ana Paula','anapaulanunes':'Ana Paula','ana':'Ana Paula','anapaula nunes':'Ana Paula',
- 'paulo':'Paulo','paulosilva':'Paulo','pauloameno':'Paulo',
- 'juceni':'Juceni','jucenimilack':'Juceni','beatriz':'Beatriz',
+import unicodedata
+def _norm(s):
+    b=''.join(c for c in unicodedata.normalize('NFKD',str(s)) if not unicodedata.combining(c))
+    return ' '.join(b.lower().replace('.',' ').split())
+# canônico = primeiro nome (com acento correto); cobre variações, caixa, e nomes "grudados"
+CANON={'ana':'Ana Paula','anapaula':'Ana Paula','anapaulanunes':'Ana Paula',
+ 'beatriz':'Beatriz','beatrizribeiro':'Beatriz',
+ 'helder':'Helder','heldercamilodeoliveira':'Helder',
+ 'isabela':'Isabela',
  'joice':'Joice','joicerodriguesdeandrade':'Joice',
+ 'juceni':'Juceni','jucenimilack':'Juceni',
+ 'paulo':'Paulo','paulosilva':'Paulo','pauloameno':'Paulo',
+ 'patricia':'Patrícia','patriciadiniz':'Patrícia',
+ 'rafael':'Rafael',
  'viviane':'Viviane','vivianevitalinadefreitas':'Viviane',
- 'patricia':'Patricia','fabiana':'Fabiana','fabianarodrigues':'Fabiana',
- 'guilhermelucas':'Guilherme','heverton':'Heverton','helder':'Helder','heldercamilodeoliveira':'Helder'}
+ 'fabiana':'Fabiana','fabianarodrigues':'Fabiana',
+ 'henrique':'Henrique','henriquesilva':'Henrique','henriquerodriguessilva':'Henrique',
+ 'hugo':'Hugo','hugopaula':'Hugo','hugopaulasilva':'Hugo',
+ 'heverton':'Heverton','felipe':'Felipe','luciana':'Luciana',
+ 'guilherme':'Guilherme','guilhermelucas':'Guilherme'}
 def nuser(raw):
     s=str(raw).strip()
     if not s or s.lower() in ('nan','none'): return None
-    if s.upper()=='PROATIVO': return None  # system account, excluded from produtividade
-    k=s.lower().replace(' ','')
-    if k in UTAB: return UTAB[k]
-    return s.split()[0].capitalize()
+    base=_norm(s)
+    if base=='proativo': return None
+    nospace=base.replace(' ','')
+    if nospace in CANON: return CANON[nospace]
+    toks=base.split()
+    if not toks: return None
+    if toks[0] in ('ana','anapaula') or toks[:2]==['ana','paula']: return 'Ana Paula'
+    if toks[0] in CANON: return CANON[toks[0]]
+    return toks[0].capitalize()
 
 # ---------- LOAD ----------
 de=S('Documentos Emitidos'); dl=S('Documentos Lançados'); ped=S('Pedidos ')
