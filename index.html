@@ -1573,14 +1573,14 @@ async function exportPDF(){
     await new Promise(r=>setTimeout(r,400));
     const node=document.getElementById('view-'+v);
     const canvas=await html2canvas(node,{backgroundColor:'#0a0b09',scale:2.5,useCORS:true});
-    const img=canvas.toDataURL('image/jpeg',0.92);
+    const img=canvas.toDataURL('image/png);
     const w=W-16,h=canvas.height*w/canvas.width;
     if(!first)pdf.addPage();first=false;
     // header band
     pdf.setFillColor(10,11,9);pdf.rect(0,0,W,H,'F');
     pdf.setFillColor(187,219,51);pdf.rect(0,0,W,3,'F');
     let y=10;let rem=h,sy=0;
-    if(h<=H-16){pdf.addImage(img,'JPEG',8,12,w,h);}
+    if(h<=H-16){pdf.addImage(img,'png',8,12,w,h);}
     else{ // split tall page
       const pageH=H-16;const ratio=canvas.width/w;
       let drawn=0;
@@ -1590,7 +1590,7 @@ async function exportPDF(){
         c2.getContext('2d').drawImage(canvas,0,drawn,canvas.width,slice,0,0,canvas.width,slice);
         if(drawn>0)pdf.addPage();
         pdf.setFillColor(10,11,9);pdf.rect(0,0,W,H,'F');pdf.setFillColor(187,219,51);pdf.rect(0,0,W,3,'F');
-        pdf.addImage(c2.toDataURL('image/jpeg',0.92),'JPEG',8,12,w,slice/ratio);
+        pdf.addImage(c2.toDataURL('image/png'),'PNG',8,12,w,slice/ratio);
         drawn+=slice;
       }
     }
