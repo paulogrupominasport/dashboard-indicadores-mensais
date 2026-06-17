@@ -1572,7 +1572,7 @@ async function exportPDF(){
     document.getElementById('view-'+v).classList.add('active');
     await new Promise(r=>setTimeout(r,400));
     const node=document.getElementById('view-'+v);
-    const canvas=await html2canvas(node,{backgroundColor:'#0a0b09',scale:1.5,useCORS:true});
+    const canvas=await html2canvas(node,{backgroundColor:'#0a0b09',scale:2.5,useCORS:true});
     const img=canvas.toDataURL('image/jpeg',0.92);
     const w=W-16,h=canvas.height*w/canvas.width;
     if(!first)pdf.addPage();first=false;
