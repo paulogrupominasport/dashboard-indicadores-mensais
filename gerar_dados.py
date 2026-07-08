@@ -65,7 +65,8 @@ de=S('Documentos Emitidos'); dl=S('Documentos Lançados'); ped=S('Pedidos ')
 cc=S('Carta Correção'); cad=S('Cadastros'); oc=S('Ordens Compra'); qr=S('Qrcodes'); vp=S('Vale Pedágio')
 ag1=S('Agendamento T-mult'); ag2=S('Agendamento Imbituba'); ag3=S('Agendamento Proativo')
 
-WINDOW=lambda a,m:(a==2026 and 1<=m<=12)  # months present in dashboard universe
+import datetime as _dt
+WINDOW=lambda a,m:(a==2026 and 1<=m<=_dt.date.today().month)  # auto-expande com o mês atual
 
 # ========== VISAO (indicadores + produtividade) ==========
 IND=['NF-e Emitidas','Documentos Lançados','Agendamentos','Vale Pedágios Emitidos','QR Codes Emitidos',
