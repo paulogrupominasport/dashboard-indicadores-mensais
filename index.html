@@ -1394,7 +1394,7 @@ function initFilters(){
   const cfops=[...new Set([...DATA.compras,...DATA.expedicoes,...DATA.servicos].map(r=>r.cfop))].sort((a,b)=>a-b);
   fillSelect('fCfop',cfops.map(c=>({v:c,l:'CFOP '+c})),'Todos');
   // default to latest year
-  if(DATA.anos.length){document.getElementById('fAno').value=Math.max(...DATA.anos);F.ano=Math.max(...DATA.anos);}
+  if(DATA.anos.length){document.getElementById('fAno').value=Math.max(...DATA.anos);F.ano=Math.max(...DATA.anos);const _vkeys=Object.keys(VISAO.months).sort();if(_vkeys.length){const _lm=+_vkeys[_vkeys.length-1].split('-')[1];document.getElementById('fMes').value=_lm;F.mes=_lm;}}
   ['fAno','fMes','fUni','fOp','fCfop'].forEach(id=>document.getElementById(id).addEventListener('change',e=>{
     const map={fAno:'ano',fMes:'mes',fUni:'uni',fOp:'op',fCfop:'cfop'};F[map[id]]=e.target.value;renderAll();}));
 }
