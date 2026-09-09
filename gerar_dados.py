@@ -65,6 +65,8 @@ de=S('Documentos Emitidos'); dl=S('Documentos Lançados'); ped=S('Pedidos ')
 cc=S('Carta Correção'); cad=S('Cadastros'); oc=S('Ordens Compra'); qr=S('Qrcodes'); vp=S('Vale Pedágio')
 ag1=S('Agendamento T-mult'); ag2=S('Agendamento Imbituba'); ag3=S('Agendamento Proativo')
 
+
+
 import datetime as _dt
 WINDOW=lambda a,m:(a==2026 and 1<=m<=_dt.date.today().month)  # auto-expande com o mês atual
 
@@ -142,7 +144,11 @@ def fin(df, datecol, cfopcol, unicol, allowed, prodcol, unifn=None):
         if cancel(r.get('Cancelada')): continue
         c=r.get(cfopcol)
         if pd.isna(c): continue
-        cint=int(c)
+        try:
+            cint=int(c)
+        except (ValueError, TypeError):
+            # Pula linhas com CFOP inválido (geralmente cabeçalhos duplicados)
+            continue
         if isinstance(allowed,tuple) and allowed[0]=='EXCEPT':
             if cint in allowed[1]: continue
         elif cint not in allowed: continue
@@ -160,7 +166,7 @@ def fin(df, datecol, cfopcol, unicol, allowed, prodcol, unifn=None):
     return rows,top
 
 expedicoes,topExp=fin(de,'Data_Emissão','CFOp_Código','Descrição',EXP_SET,'Pseudônimo')
-compras,topCom   =fin(dl,'Data_Emissão','CFoP_Código','Código',('EXCEPT',SERV_EXCL),'Pseudônimo.1',unifn=uni_compras)
+compras,topCom   =fin(dl,'Data_Digitação','CFoP_Código','Código',('EXCEPT',SERV_EXCL),'Pseudônimo.1',unifn=uni_compras)
 servicos,topServ =fin(de,'Data_Emissão','CFOp_Código','Descrição',SERV_SET,'Pseudônimo')
 
 # ========== SOBRAS ==========
